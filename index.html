@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>InfraRay | Service Notice</title>
+    <!-- Google Fonts + simple reset -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 30%, #0a0f1e, #03060c);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* animated noise/grid overlay for subtle tech feel */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjMjIyYjQwIiBmaWxsLW9wYWNpdHk9IjAuMDMiIGQ9Ik0wIDBoNDB2NDBIMHoiLz48L3N2Zz4=');
+            pointer-events: none;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        /* glowing orbs (floating) */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .orb-1 {
+            width: 45vw;
+            height: 45vw;
+            background: #ff3b6f;
+            top: -10vh;
+            right: -20vw;
+            animation: drift 22s infinite alternate ease-in-out;
+        }
+
+        .orb-2 {
+            width: 55vw;
+            height: 55vw;
+            background: #3b82f6;
+            bottom: -15vh;
+            left: -25vw;
+            animation: drift 26s infinite alternate-reverse ease-in-out;
+        }
+
+        .orb-3 {
+            width: 35vw;
+            height: 35vw;
+            background: #a855f7;
+            top: 40%;
+            left: 30%;
+            animation: drift 18s infinite alternate ease;
+            opacity: 0.2;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(4%, 6%) scale(1.08);
+            }
+        }
+
+        /* main warning card */
+        .warning-container {
+            position: relative;
+            z-index: 10;
+            max-width: 660px;
+            width: 100%;
+            background: rgba(8, 12, 22, 0.65);
+            backdrop-filter: blur(14px);
+            border-radius: 3rem;
+            border: 1px solid rgba(255, 70, 120, 0.25);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 80, 120, 0.1) inset;
+            padding: 2.2rem 2rem 2.8rem;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 550px) {
+            .warning-container {
+                padding: 1.8rem 1.4rem 2.2rem;
+                border-radius: 2rem;
+            }
+        }
+
+        /* icon & header */
+        .warning-icon {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .warning-icon svg {
+            filter: drop-shadow(0 6px 12px rgba(255, 40, 80, 0.3));
+            width: 70px;
+            height: 70px;
+        }
+
+        @media (max-width: 480px) {
+            .warning-icon svg {
+                width: 55px;
+                height: 55px;
+            }
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(135deg, #FFB7C5, #FF6A88, #FF3B6F);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            margin: 0.5rem 0 0.75rem;
+        }
+
+        @media (max-width: 550px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        .alert-badge {
+            background: rgba(255, 50, 80, 0.18);
+            border: 1px solid rgba(255, 70, 100, 0.4);
+            border-radius: 100px;
+            padding: 0.35rem 1rem;
+            width: fit-content;
+            margin: 0 auto 1.4rem auto;
+            backdrop-filter: blur(4px);
+        }
+
+        .alert-badge span {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #FF90AA;
+            letter-spacing: 0.4px;
+        }
+
+        .message {
+            text-align: center;
+            color: #CED4E6;
+            font-weight: 400;
+            font-size: 1.08rem;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+            padding: 0 0.5rem;
+        }
+
+        .message strong {
+            color: #FF7A9E;
+            font-weight: 600;
+        }
+
+        /* notice card */
+        .info-panel {
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 1.8rem;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0 2rem;
+            border-left: 4px solid #FF4D7A;
+            backdrop-filter: blur(8px);
+        }
+
+        .info-panel p {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            font-weight: 500;
+            color: #EFF3FF;
+        }
+
+        .info-panel .domain {
+            background: #12182c;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-family: monospace;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            color: #FFB3C6;
+            border: 1px solid #2a3452;
+        }
+
+        .badge-lock {
+            background: #1E2A3E;
+            border-radius: 30px;
+            padding: 0.3rem 0.9rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #A5F0D1;
+        }
+
+        .redirect-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(105deg, #FF3366, #FF4D7A);
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 20px -8px rgba(255, 51, 102, 0.3);
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto 1rem;
+            backdrop-filter: blur(5px);
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 240, 0.2);
+        }
+
+        .redirect-link:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(105deg, #FF1F5A, #FF658C);
+            box-shadow: 0 20px 30px -12px rgba(255, 51, 102, 0.5);
+        }
+
+        .button-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        .secondary-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #7F8AA8;
+            margin-top: 1.8rem;
+            border-top: 1px dashed rgba(255, 90, 120, 0.3);
+            padding-top: 1.5rem;
+        }
+
+        /* timer / status line */
+        .status-timer {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            background: rgba(18, 25, 45, 0.6);
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            width: fit-content;
+            margin: 1rem auto 0;
+        }
+
+        .timer-text {
+            color: #C0CCF0;
+        }
+
+        .timer-number {
+            font-weight: 700;
+            font-family: monospace;
+            background: #03060c;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            color: #FF9EBC;
+        }
+
+        hr {
+            border-color: rgba(255, 70, 100, 0.2);
+            margin: 0.2rem 0;
+        }
+
+        /* animated blink for urgency */
+        @keyframes gentlePulse {
+            0% {
+                opacity: 0.7;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .info-panel p {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="warning-container">
+        <div class="warning-icon">
+            <!-- alert triangle with exclamation + subtle animation -->
+            <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="60" cy="60" r="54" stroke="url(#gradAlert)" stroke-width="2.5" fill="rgba(20,10,30,0.3)"
+                    stroke-dasharray="4 4" />
+                <path d="M60 36 L60 68" stroke="#FF5A82" stroke-width="5" stroke-linecap="round" />
+                <circle cx="60" cy="84" r="4.5" fill="#FF3B6F" stroke="#FFB0C2" stroke-width="1.5" />
+                <path d="M26 94 L94 26" stroke="url(#gradAlert)" stroke-width="2" stroke-opacity="0.4"
+                    stroke-dasharray="3 3" />
+                <defs>
+                    <linearGradient id="gradAlert" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FF4D7A" />
+                        <stop offset="1" stop-color="#FF96B3" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        <h1>⚠️ SERVICE UNAVAILABLE</h1>
+        <div class="alert-badge">
+            <span>⚠️ MAINTENANCE MODE ⚠️</span>
+        </div>
+        <div class="message">
+            Our main website is temporarily <strong>offline</strong> due to critical upgrades.<br>
+            Access is strictly limited to the emergency mirror portal below.
+        </div>
+
+        <div class="info-panel">
+            <p>
+                <span>🔒 Authorized access only →</span>
+                <span class="domain">https://infraray.pages.dev/</span>
+                <span class="badge-lock">verified domain</span>
+            </p>
+        </div>
+
+        <div class="button-wrapper">
+            <a href="https://infraray.pages.dev/" id="officialLink" class="redirect-link" target="_blank"
+                rel="noopener noreferrer">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 13V19C18 20.1 17.1 21 16 21H5C3.9 21 3 20.1 3 19V8C3 6.9 3.9 6 5 6H11" stroke="white"
+                        stroke-width="1.8" stroke-linecap="round" />
+                    <path d="M15 3H21V9" stroke="white" stroke-width="1.8" stroke-linecap="round" />
+                    <path d="M10 14L21 3" stroke="white" stroke-width="1.8" stroke-linecap="round" />
+                </svg>
+                Enter Authorized Portal → infraray.pages.dev
+            </a>
+        </div>
+
+        <!-- dynamic status: auto redirect after countdown + message -->
+        <div class="status-timer" id="timerSection">
+            <span class="timer-text">⏳ Auto-redirect in</span>
+            <span class="timer-number" id="countdownDisplay">10</span>
+            <span class="timer-text">seconds</span>
+        </div>
+        <div class="secondary-note">
+            ⚡ Only trusted domain: <strong>infraray.pages.dev</strong> is allowed.<br>
+            Other services are suspended until further notice.
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // ---------------------------
+            // configuration
+            // ---------------------------
+            const ALLOWED_URL = "https://infraray.pages.dev/";
+            const REDIRECT_DELAY_SEC = 10;      // seconds before auto-redirect
+            let countdown = REDIRECT_DELAY_SEC;
+            const countdownElem = document.getElementById("countdownDisplay");
+            let timerInterval = null;
+
+            // Helper: redirect to the ONLY allowed domain
+            function redirectToOfficial() {
+                // ensure we use the exact allowed URL, avoid any XSS or open redirect issues
+                window.location.href = ALLOWED_URL;
+            }
+
+            // Update countdown UI and handle expiry
+            function updateCountdown() {
+                if (countdownElem) {
+                    countdownElem.innerText = countdown;
+                }
+                if (countdown <= 0) {
+                    // stop timer and redirect
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    redirectToOfficial();
+                }
+            }
+
+            // start countdown timer
+            function startCountdown() {
+                updateCountdown(); // show initial value
+                timerInterval = setInterval(() => {
+                    if (countdown > 0) {
+                        countdown--;
+                        updateCountdown();
+                    } else {
+                        // already handled in update but ensure cleaning
+                        if (timerInterval) {
+                            clearInterval(timerInterval);
+                            timerInterval = null;
+                        }
+                        redirectToOfficial();
+                    }
+                }, 1000);
+            }
+
+            // Prevent any other link navigation to external sites except our single anchor
+            // Also block clicks on any other potential custom buttons that might try to bypass.
+            // We'll also add a security listener for all clicks on the page, but allow the official link
+            // and maybe block any other <a> that tries to redirect elsewhere (just in case).
+            // However, we want to keep UX: the only clickable action should be our .redirect-link
+            // But we also protect from malicious injection. The link is hardcoded to ALLOWED_URL.
+            // Additionally we will override any other link behaviour.
+            const allowedAnchor = document.getElementById('officialLink');
+            // make sure the anchor href is exactly the allowed URL (double-check)
+            if (allowedAnchor) {
+                allowedAnchor.setAttribute('href', ALLOWED_URL);
+                allowedAnchor.addEventListener('click', (e) => {
+                    // we let the natural navigation happen, but we also might add tracking: 
+                    // but we also stop any custom JS redirect that would temper.
+                    // It's fine. Additionally we add a confirm? not needed, but safe.
+                    // However we also ensure that any secondary click doesn't get blocked by global.
+                    // The event will propagate normally.
+                });
+            }
+
+            // Block any unexpected anchor clicks that could lead to phishing / outside link
+            // This ensures that no script or hidden links can lead anywhere except the official domain.
+            // But we keep it user-friendly: only allow redirects to https://infraray.pages.dev/ (and its exact)
+            document.body.addEventListener('click', (event) => {
+                let target = event.target.closest('a');
+                if (target && target.href) {
+                    const href = target.href;
+                    // allow if the link points exactly to ALLOWED_URL (or maybe allowed URL with trailing slash variants)
+                    let isAllowed = false;
+                    try {
+                        const urlObj = new URL(href);
+                        const allowedObj = new URL(ALLOWED_URL);
+                        // compare origin + pathname (ensuring we only allow the exact path)
+                        if (urlObj.origin === allowedObj.origin && urlObj.pathname === allowedObj.pathname) {
+                            isAllowed = true;
+                        }
+                        // also allow if the href is exactly ALLOWED_URL (including possible trailing slash normalization)
+                        if (href === ALLOWED_URL || href === ALLOWED_URL.replace(/\/$/, '') || href === ALLOWED_URL + '/') {
+                            isAllowed = true;
+                        }
+                    } catch (e) { /* ignore */ }
+
+                    if (!isAllowed) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        // optional small user feedback
+                        const msgDiv = document.createElement('div');
+                        msgDiv.innerText = '⛔ Access restricted to authorized domain only.';
+                        msgDiv.style.position = 'fixed';
+                        msgDiv.style.bottom = '20px';
+                        msgDiv.style.left = '50%';
+                        msgDiv.style.transform = 'translateX(-50%)';
+                        msgDiv.style.backgroundColor = '#FF3B6F';
+                        msgDiv.style.color = 'white';
+                        msgDiv.style.padding = '10px 18px';
+                        msgDiv.style.borderRadius = '40px';
+                        msgDiv.style.fontWeight = '500';
+                        msgDiv.style.fontSize = '0.85rem';
+                        msgDiv.style.zIndex = '999';
+                        msgDiv.style.backdropFilter = 'blur(12px)';
+                        msgDiv.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+                        msgDiv.style.pointerEvents = 'none';
+                        document.body.appendChild(msgDiv);
+                        setTimeout(() => { msgDiv.style.opacity = '0'; setTimeout(() => msgDiv.remove(), 600); }, 1800);
+                        return false;
+                    }
+                }
+            }, true); // use capture to intercept early
+
+            // Additionally disable right-click / inspect? not needed but optionally we keep context menu for dev but no restriction.
+            // clean any potential stored timers or overriding.
+
+            // Also ensure that if someone manually tries to call window.location or use devtools,
+            // we cannot fully prevent but our page content encourages only proper link.
+            // For better user experience: also show message before redirecting that they can click manually.
+            // Add a small dynamic message update when countdown ends? already handled.
+
+            // Disable any attempt to change the .redirect-link href via mutation (extra security)
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'href') {
+                        const targetNode = mutation.target;
+                        if (targetNode.id === 'officialLink' && targetNode.href !== ALLOWED_URL) {
+                            targetNode.setAttribute('href', ALLOWED_URL);
+                        }
+                    }
+                });
+            });
+            if (allowedAnchor) {
+                observer.observe(allowedAnchor, { attributes: true });
+            }
+
+            // start auto redirect countdown
+            startCountdown();
+
+            // Also if user clicks the button we can clear or not? It's okay, but we should also maybe stop the timer 
+            // so we don't double redirect, but double redirect is not harmful, it will still point to same.
+            // But for elegance: when user manually clicks, we keep countdown, but we avoid extra conflict.
+            // If manual click triggers before timer, eventually timer will redirect again but harmless.
+            // Optionally we cancel timer on manual click to avoid annoyance.
+            if (allowedAnchor) {
+                allowedAnchor.addEventListener('click', (e) => {
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    // just let the user go to the correct domain.
+                });
+            }
+
+            // display a subtle console warning for curious devs
+            console.log("%c⚠️ INFRASTRUCTURE LOCKDOWN ⚠️", "color: #FF3B6F; font-size: 14px; font-weight: bold;");
+            console.log("Only allowed domain: https://infraray.pages.dev/");
+        })();
+    </script>
+</body>
+
+</html>
